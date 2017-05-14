@@ -1,4 +1,4 @@
-package com.parkcurityApp;
+package com.parkcurityapp;
 
 import com.facebook.react.ReactActivity;
 

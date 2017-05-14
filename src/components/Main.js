@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator} from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image} from 'react-native';
 import { getImages } from '../actions/index';
 
 
@@ -49,7 +49,11 @@ getImages(id) {
         <Text>React Native</Text>
         <Text
         onPress={() => navigate('Image', { user: 'Lucy' })}>
-        HUWWO {this.state.data.result[0].url}</Text>
+        HUWWOtttt {this.state.data.result[0].url}</Text>
+        <Image
+          style={styles.stretch}
+          source={{uri: this.state.data.result[0].url}}
+        />
       </View>
     );
   }
@@ -61,6 +65,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 80
+  },
+    stretch: {
+    width: 50,
+    height: 200
   }
 });
 
