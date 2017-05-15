@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image} from 'react-native';
-import { getImages } from '../actions/index';
+import { Container, Content, Card, CardItem, Thumbnail } from 'native-base';
 
+  var imageDisplay = [];
 
 class Main extends Component {
   constructor(props) {
@@ -20,16 +21,41 @@ class Main extends Component {
     )
 }
 
+
+
 getImages(id) {
     return fetch('https://parkcurity.herokuapp.com/photo')
       .then((response) => response.json())
       .then((responseJson) => {
+        this.handleImages(responseJson.result);
         return responseJson;
       })
       .catch((error) => {
         console.error(error);
       });
 }
+
+handleImages(images){
+      for (var i = 0; i < images.length; i++ ){
+        imageDisplay.push(
+
+          <Card >
+                        <CardItem>
+                          </CardItem>
+                          <CardItem cardBody>
+                             <Image
+          style={styles.stretch} resizeMode='cover'
+          source={{uri: images[i].url}}key={i}/>
+                          </CardItem>
+                          <CardItem>
+        
+                              <Text>11h ago</Text>
+                        </CardItem>
+                   </Card>
+          
+        )
+      }
+    }
   render() {
    const { navigate } = this.props.navigation;
 
@@ -43,18 +69,14 @@ getImages(id) {
       );
     }
 
-  
+    
     return (
-      <View>
-        <Text>React Native</Text>
+      <Container>
         <Text
-        onPress={() => navigate('Image', { user: 'Lucy' })}>
-        HUWWOtttt {this.state.data.result[0].url}</Text>
-        <Image
-          style={styles.stretch}
-          source={{uri: this.state.data.result[0].url}}
-        />
-      </View>
+        onPress={() => navigate('Image', { photo: this.state.data.result[0] })}>
+        HUWWOtttt</Text>
+        {imageDisplay}
+      </Container>
     );
   }
 }
@@ -67,8 +89,7 @@ const styles = StyleSheet.create({
     height: 80
   },
     stretch: {
-    width: 50,
-    height: 200
+    flex:1, width: 200, height: 100
   }
 });
 
