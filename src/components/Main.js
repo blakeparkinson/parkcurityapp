@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image} from 'react-native';
-import { Container, Content, Card, CardItem, Thumbnail } from 'native-base';
+import { Container, Content, Card, CardItem, Thumbnail, Icon, Button } from 'native-base';
+import Moment from 'moment-timezone';
+
+
 
   var imageDisplay = [];
 
@@ -33,13 +36,16 @@ getImages(id) {
       .catch((error) => {
         console.error(error);
       });
+      
 }
 
 handleImages(images){
       for (var i = 0; i < images.length; i++ ){
+        var fomatted_date = Moment(images[i].createdAt).tz('America/Denver').format('MM/DD/YY hh:mm a');
         imageDisplay.push(
 
-          <Card >
+          <Card key={i}
+          onPress={() => navigate('Image', { photo: images[i] })}>
                         <CardItem>
                           </CardItem>
                           <CardItem cardBody>
@@ -47,10 +53,17 @@ handleImages(images){
           style={styles.stretch} resizeMode='cover'
           source={{uri: images[i].url}}key={i}/>
                           </CardItem>
-                          <CardItem>
-        
-                              <Text>11h ago</Text>
-                        </CardItem>
+                          <View style={styles.bottomContent}>
+                          <Button transparent>
+                          <Icon active name="camera" />
+                                  <Text>{images[i].cameraId}</Text>
+                              </Button>
+                                                    <Button transparent>
+
+                          <Text style={styles.date}>{fomatted_date}</Text>
+                                                        </Button>
+
+                          </View>
                    </Card>
           
         )
@@ -90,7 +103,16 @@ const styles = StyleSheet.create({
   },
     stretch: {
     flex:1, width: 200, height: 100
-  }
+  },
+    date:{
+      alignItems: 'flex-end',
+    },
+    bottomContent:{
+        flex:1,
+        flexDirection:'row',
+        alignItems:'stretch',
+        justifyContent:'space-between'
+    }
 });
 
 export default Main;
