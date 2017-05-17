@@ -22,7 +22,9 @@ class Main extends Component {
 
   setupImpagination() {
     let dataset = new Dataset({
-      pageSize: 2,
+      pageSize: 1,
+      loadHorizon: 1,
+
 
       // Anytime there's a new state emitted, we want to set that on
       // the componets local state.
@@ -32,7 +34,7 @@ class Main extends Component {
 
       // Where to fetch the data from.
       fetch(pageOffset, pageSize, stats) {
-        return fetch(`https://parkcurity.herokuapp.com/photo?offset=0&limit=${pageSize}`)
+        return fetch(`https://parkcurity.herokuapp.com/photo?offset=${pageOffset}&limit=${pageSize}`)
           .then(response => response.json())
           .catch((error) => {
             console.error(error);
@@ -54,11 +56,21 @@ class Main extends Component {
         if (!record.isSettled) {
           return <Spinner key={Math.random()}/>;
         }
-        console.log(record);
         return <MainItem record={record} key={record.content._id} />;
     })
 
   }
+
+  setCurrentReadOffset = (event) => {
+    let itemHeight = 140;
+    let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
+    let currentItemIndex = Math.ceil(currentOffset / itemHeight);
+
+    console.log('index');
+    console.log(currentItemIndex);
+    this.state.dataset.setReadOffset(currentItemIndex);
+  }
+  
 
   render() {
     return (
@@ -66,7 +78,7 @@ class Main extends Component {
         <Header>
           <Title>Parkcurity</Title>
         </Header>
-        <Content>
+        <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={300} removeClippedSubviews={true}>
           {this.renderItem()}
         </Content>
       </Container>
