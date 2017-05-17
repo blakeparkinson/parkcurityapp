@@ -1,97 +1,78 @@
 import React, { Component } from 'react';
 import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image} from 'react-native';
-import { Container, Content, Card, CardItem, Thumbnail, Icon, Button } from 'native-base';
-import Moment from 'moment-timezone';
+import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
+import Dataset from 'impagination';
+
+import MainItem from './MainItem';
 
 
-
-  var imageDisplay = [];
 
 class Main extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      data: null
-    }
+      dataset: null,
+      datasetState: null
+    };
   }
   static navigationOptions = {
     title: 'Main',
   }
 
-  async componentWillMount() { 
-    this.setState(
-      {data: await this.getImages()},
-    )
-}
+  setupImpagination() {
+    let dataset = new Dataset({
+      pageSize: 2,
 
+      // Anytime there's a new state emitted, we want to set that on
+      // the componets local state.
+      observe: (datasetState) => {
+        this.setState({datasetState});
+      },
 
-
-getImages(id) {
-    return fetch('https://parkcurity.herokuapp.com/photo')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.handleImages(responseJson.result);
-        return responseJson;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-      
-}
-
-handleImages(images){
-      for (var i = 0; i < images.length; i++ ){
-        var fomatted_date = Moment(images[i].createdAt).tz('America/Denver').format('MM/DD/YY hh:mm a');
-        imageDisplay.push(
-
-          <Card key={i}
-          onPress={() => navigate('Image', { photo: images[i] })}>
-                        <CardItem>
-                          </CardItem>
-                          <CardItem cardBody>
-                             <Image
-          style={styles.stretch} resizeMode='cover'
-          source={{uri: images[i].url}}key={i}/>
-                          </CardItem>
-                          <View style={styles.bottomContent}>
-                          <Button transparent>
-                          <Icon active name="camera" />
-                                  <Text>{images[i].cameraId}</Text>
-                              </Button>
-                                                    <Button transparent>
-
-                          <Text style={styles.date}>{fomatted_date}</Text>
-                                                        </Button>
-
-                          </View>
-                   </Card>
-          
-        )
+      // Where to fetch the data from.
+      fetch(pageOffset, pageSize, stats) {
+        return fetch(`https://parkcurity.herokuapp.com/photo?offset=0&limit=${pageSize}`)
+          .then(response => response.json())
+          .catch((error) => {
+            console.error(error);
+          });
       }
-    }
+    });
+
+    // Set the readOffset to the first record in the state
+    dataset.setReadOffset(0);
+    this.setState({dataset});
+  }
+
+  componentWillMount() {
+    this.setupImpagination();
+  }
+
+  renderItem(){
+    return this.state.datasetState.map(record => {
+        if (!record.isSettled) {
+          return <Spinner key={Math.random()}/>;
+        }
+        console.log(record);
+        return <MainItem record={record} key={record.content._id} />;
+    })
+
+  }
+
   render() {
-   const { navigate } = this.props.navigation;
-
-   if (!this.state.data) {
-      return (
-        <ActivityIndicator
-          animating={true}
-          style={styles.indicator}
-          size="large"
-        />
-      );
-    }
-
-    
     return (
       <Container>
-        <Text
-        onPress={() => navigate('Image', { photo: this.state.data.result[0] })}>
-        HUWWOtttt</Text>
-        {imageDisplay}
+        <Header>
+          <Title>Parkcurity</Title>
+        </Header>
+        <Content>
+          {this.renderItem()}
+        </Content>
       </Container>
     );
   }
+
 }
 
 const styles = StyleSheet.create({
