@@ -1,5 +1,5 @@
 {
-  "name": "ParkcurityApp",
+  "name": "Parkcurity",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "react-native": "0.43.0",
     "react-native-infinite-scroll-view": "^0.4.2",
     "react-native-router-flux": "^3.38.0",
+    "react-native-svg-uri": "^1.2.0",
     "react-native-vector-icons": "^4.1.1",
     "react-navigation": "^1.0.0-beta.3",
     "react-redux": "^5.0.1",

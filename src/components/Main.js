@@ -4,6 +4,7 @@ import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Ti
 import Dataset from 'impagination';
 
 import MainItem from './MainItem';
+import HeaderItem from './HeaderItem';
 
 
 
@@ -66,8 +67,6 @@ class Main extends Component {
     let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
     let currentItemIndex = Math.ceil(currentOffset / itemHeight);
 
-    console.log('index');
-    console.log(currentItemIndex);
     this.state.dataset.setReadOffset(currentItemIndex);
   }
   
@@ -75,9 +74,7 @@ class Main extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Title>Parkcurity</Title>
-        </Header>
+       <HeaderItem></HeaderItem>
         <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={300} removeClippedSubviews={true}>
           {this.renderItem()}
         </Content>
@@ -95,7 +92,7 @@ const styles = StyleSheet.create({
     height: 80
   },
     stretch: {
-    flex:1, width: 200, height: 100
+    flex:1, width: 300, height: 225
   },
     date:{
       alignItems: 'flex-end',

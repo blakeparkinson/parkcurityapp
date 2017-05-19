@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     height: 80
   },
     stretch: {
-    flex:1, width: 200, height: 100
+    flex:1, width: 300, height: 225
   },
     date:{
       alignItems: 'flex-end',
