@@ -21,12 +21,20 @@ export default class HeaderItem extends Component {
     }
   }
 
-    async componentWillMount() { 
-      console.log('yyyy');
-      this.setState(
-        {data: await this.setupData()},
+  async componentWillMount() { 
+      this.init();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.triggerRefresh){
+      this.init();
+    }
+  }
+
+  async init(){
+    this.setState(
+        {data: await this.setupData()}
       )
-      console.log(this);
   }
 
   setupData(){
@@ -99,7 +107,6 @@ export default class HeaderItem extends Component {
       count: data.length,
       hotHour: display
     };
-    console.log(items);
     return items;
   }
 

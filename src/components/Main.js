@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image} from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image, ScrollView} from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
 
@@ -16,10 +16,12 @@ class Main extends Component {
       dataset: null,
       datasetState: null
     };
+    this.triggerRefresh = false;
   }
   static navigationOptions = {
     title: 'Main',
   }
+
 
   setupImpagination() {
     let dataset = new Dataset({
@@ -63,21 +65,36 @@ class Main extends Component {
   }
 
   setCurrentReadOffset = (event) => {
-    let itemHeight = 140;
+    this.triggerRefresh = false;
+    let itemHeight = 200;
     let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
     let currentItemIndex = Math.ceil(currentOffset / itemHeight);
 
     this.state.dataset.setReadOffset(currentItemIndex);
+
+    if (event.nativeEvent.contentOffset.y < -50){
+        //scrolling up refreshes  data
+        this.triggerRefresh = true;
+        this.setupImpagination();
+    }
   }
   
 
   render() {
+    const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    };
+
     return (
       <Container>
-       <HeaderItem></HeaderItem>
+
+       <HeaderItem triggerRefresh={this.triggerRefresh}></HeaderItem>
+
         <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={300} removeClippedSubviews={true}>
           {this.renderItem()}
         </Content>
+
       </Container>
     );
   }
