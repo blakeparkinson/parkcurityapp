@@ -20,6 +20,14 @@ class Main extends Component {
   }
   static navigationOptions = {
     title: 'Main',
+    headerStyle: {
+      backgroundColor: '#f9f9ff'
+    },
+    headerTintColor: "#01D0A7",
+    headerTitleStyle:{
+      fontFamily: 'AppleSDGothicNeo-Light'
+    }
+
   }
 
 

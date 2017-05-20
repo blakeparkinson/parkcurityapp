@@ -4,6 +4,13 @@ import { View, Text } from 'react-native';
 class Image extends Component {
   static navigationOptions = {
     title: 'Image',
+     headerStyle: {
+      backgroundColor: '#f9f9ff'
+    },
+    headerTintColor: "#01D0A7",
+    headerTitleStyle:{
+      fontFamily: 'AppleSDGothicNeo-Light'
+    }
   }
 
   render() {
