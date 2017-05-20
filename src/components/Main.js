@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator, Image, ScrollView} from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView} from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
 
@@ -55,11 +55,15 @@ class Main extends Component {
   }
 
   renderItem(){
+    const { navigate } = this.props.navigation;
+
     return this.state.datasetState.map(record => {
         if (!record.isSettled) {
           return <Spinner key={Math.random()}/>;
         }
-        return <MainItem record={record} key={record.content._id} />;
+        return <TouchableOpacity onPress={() => {console.log('hi'); navigate('Image', { photo: record })}} key={record.content._id}>
+                  <MainItem record={record} key={record.content._id} />
+                </TouchableOpacity>;
     })
 
   }

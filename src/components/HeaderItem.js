@@ -96,11 +96,13 @@ export default class HeaderItem extends Component {
     }
 
     var display = '';
-    if (maxKey > 12){
-      display = (maxKey - 12) + 'pm';
-    }
-    else {
-      display = maxKey + 'am';
+    if (maxKey){
+      if (maxKey > 12){
+        display = (maxKey - 12) + 'pm';
+      }
+      else {
+        display = maxKey + 'am';
+      }
     }
 
     var items = {
