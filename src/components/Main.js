@@ -17,6 +17,7 @@ class Main extends Component {
       datasetState: null
     };
     this.triggerRefresh = false;
+    this.timer = false;
   }
   static navigationOptions = {
     title: 'Main',
@@ -84,12 +85,22 @@ class Main extends Component {
 
     this.state.dataset.setReadOffset(currentItemIndex);
 
-    if (event.nativeEvent.contentOffset.y < -50){
+    if (event.nativeEvent.contentOffset.y < -70){
+      this.timer = setTimeout(() => {
         //scrolling up refreshes  data
         this.triggerRefresh = true;
         this.setupImpagination();
+      }, 300);
+    }
+
+    else{
+
+      //user quickly unscrolled, don't refetch
+      clearTimeout(this.timer);
     }
   }
+
+
   
 
   render() {
