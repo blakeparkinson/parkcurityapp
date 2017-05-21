@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
+import PhotoView from 'react-native-photo-view';
+
+
 class Image extends Component {
   static navigationOptions = {
     title: 'Image',
@@ -19,7 +22,13 @@ class Image extends Component {
 
     return (
       <View>
-        <Text>React Native Boilerplate {params.user}</Text>
+        <PhotoView
+        source={{uri: params.photo.content.url}}
+        minimumZoomScale={0.5}
+        maximumZoomScale={3}
+        androidScaleType="center"
+        onLoad={() => console.log("Image loaded!")}
+        style={{width: 350, height: 263}} />
       </View>
     );
   }

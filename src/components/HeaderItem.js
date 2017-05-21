@@ -59,7 +59,7 @@ export default class HeaderItem extends Component {
                }
              </View>
              <View style={styles.subheader}>
-               <SvgUri width="40" height="40" fill="#E3E3E3" source={require('../img/badguy.svg')} />
+               <SvgUri style={styles.badGuy} width="40" height="40" fill="#E3E3E3" source={require('../img/badguy.svg')} />
                <Text style={styles.text}>Bad Guys:</Text>
               {this.state.data &&
 
@@ -137,6 +137,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold'
+  },
+  badGuy:{
+    marginLeft: 5
   }
   
 });
