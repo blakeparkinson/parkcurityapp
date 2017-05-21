@@ -34,7 +34,7 @@ export default class MainItem extends Component {
             <View style={styles.bottomContent}>
                 <Button transparent>
                     <Icon active name="camera" />
-                    <Text>{this.recordData.cameraId}</Text>
+                    <Text style={styles.camera}>{this.recordData.cameraId}</Text>
                 </Button>
                 <Button transparent>
                     <Text style={styles.date}>{this.fomatted_date}</Text>
@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
   },
     date:{
       alignItems: 'flex-end',
+      fontFamily: 'Helvetica Neue',
+      color: '#878686'
+    },
+    camera:{
+      fontFamily: 'Helvetica Neue',
+      color: '#878686'
     },
     bottomContent:{
         flex:1,

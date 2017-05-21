@@ -131,11 +131,13 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     fontSize: 10,
+    fontFamily: 'Noteworthy',
     marginTop: 10
   },
   text2:{
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
+    fontFamily: 'Noteworthy',
     fontWeight: 'bold'
   },
   badGuy:{
