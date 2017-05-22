@@ -33,7 +33,7 @@ export default class MainItem extends Component {
         </CardItem>
             <View style={styles.bottomContent}>
                 <Button transparent>
-                    <Icon active name="camera" />
+                    <Icon active name="camera" style={{color: '#046552'}} />
                     <Text style={styles.camera}>{this.recordData.cameraId}</Text>
                 </Button>
                 <Button transparent>
@@ -66,9 +66,10 @@ const styles = StyleSheet.create({
       color: '#878686'
     },
     bottomContent:{
-        flex:1,
-        flexDirection:'row',
-        alignItems:'stretch',
-        justifyContent:'space-between'
+      flex:1,
+      flexDirection:'row',
+      alignItems:'stretch',
+      justifyContent:'space-between',
+      backgroundColor: '#eaf1ef'
     }
 });
