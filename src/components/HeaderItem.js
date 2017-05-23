@@ -8,7 +8,7 @@ import {
   Left
 } from 'react-native';
 
-import { Header, Title, Container } from 'native-base';
+import { Header, Title, Container, Button, Icon } from 'native-base';
 import SvgUri from 'react-native-svg-uri';
 import Moment from 'moment-timezone';
 
@@ -19,6 +19,7 @@ export default class HeaderItem extends Component {
     this.state = {
        data: null
     }
+    console.log(this.props);
   }
 
   async componentWillMount() { 
@@ -26,6 +27,7 @@ export default class HeaderItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     if (nextProps.triggerRefresh){
       this.init();
     }
@@ -67,12 +69,27 @@ export default class HeaderItem extends Component {
               }
 
              </View>
+             <View style={styles.subheader}>
+               <Button small outline bordered light onPress={() => {this.viewClick();}}>
+                      <Icon name='md-apps' />
+              </Button>
+              {this.props.picView ? (
+                  <Text style={styles.text}>List View</Text>
+              ):(
+
+                  <Text style={styles.text}>Picture View</Text>
+              )}
+
+             </View>
 
           
         </View>
     );
   }
 
+  viewClick(){
+    this.props.callback();            
+  }
   formatData(data){
     var buckets = {};
     for (let item of data){
@@ -142,6 +159,9 @@ const styles = StyleSheet.create({
   },
   badGuy:{
     marginLeft: 5
+  },
+  button:{
+    backgroundColor: '#eaf1ef'
   }
   
 });

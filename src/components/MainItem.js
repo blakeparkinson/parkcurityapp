@@ -26,10 +26,8 @@ export default class MainItem extends Component {
 
   render(){
     return (
-
       <Card key={Math.random()}>
         <CardItem cardBody>
-            <Image style={styles.stretch} resizeMode='cover'source={{uri: this.recordData.url}} key={Math.random()}/>
         </CardItem>
             <View style={styles.bottomContent}>
                 <Button transparent>

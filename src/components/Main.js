@@ -5,8 +5,7 @@ import Dataset from 'impagination';
 
 import MainItem from './MainItem';
 import HeaderItem from './HeaderItem';
-
-
+import Thumb from './Thumb';
 
 class Main extends Component {
   constructor(props) {
@@ -14,12 +13,16 @@ class Main extends Component {
 
     this.state = {
       dataset: null,
-      datasetState: null
+      datasetState: null,
+      picView: false
     };
     this.triggerRefresh = false;
     this.timer = false;
+    this.currentItemIndex = 0;
   }
-  static navigationOptions = {
+
+  static navigationOptions = () => {
+    return{
     title: 'Main',
     headerStyle: {
       backgroundColor: '#f9f9ff'
@@ -28,14 +31,14 @@ class Main extends Component {
     headerTitleStyle:{
       fontFamily: 'AppleSDGothicNeo-Light'
     }
-
+    }
   }
 
 
   setupImpagination() {
     let dataset = new Dataset({
-      pageSize: 1,
-      loadHorizon: 1,
+      pageSize: 10,
+      loadHorizon: 10,
 
 
       // Anytime there's a new state emitted, we want to set that on
@@ -63,15 +66,24 @@ class Main extends Component {
     this.setupImpagination();
   }
 
+  handlePicView(){
+    if (this.state.picView){
+          this.setState({picView: false});
+    }
+    else{
+          this.setState({picView: true});
+    }
+  }
+
+
   renderItem(){
     const { navigate } = this.props.navigation;
-
-    return this.state.datasetState.map(record => {
+    return this.state.datasetState.map((record, index) => {
         if (!record.isSettled) {
           return <Spinner key={Math.random()}/>;
         }
-        return <TouchableOpacity onPress={() => {console.log('hi'); navigate('Image', { photo: record })}} key={record.content._id}>
-                  <MainItem record={record} key={record.content._id} />
+        return <TouchableOpacity onPress={() => {navigate('Image', { photo: record })}} key={index}>
+                  <MainItem record={record} key={index} indexPass={index}/>
                 </TouchableOpacity>;
     })
 
@@ -81,9 +93,11 @@ class Main extends Component {
     this.triggerRefresh = false;
     let itemHeight = 200;
     let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
-    let currentItemIndex = Math.ceil(currentOffset / itemHeight);
-
-    this.state.dataset.setReadOffset(currentItemIndex);
+    let newItemIndex = Math.ceil(currentOffset / itemHeight);
+    if (this.currentItemIndex != newItemIndex){
+      this.state.dataset.setReadOffset(newItemIndex);
+      this.currentItemIndex = newItemIndex;
+    }
 
     if (event.nativeEvent.contentOffset.y < -70){
       this.timer = setTimeout(() => {
@@ -112,12 +126,17 @@ class Main extends Component {
     return (
       <Container>
 
-       <HeaderItem triggerRefresh={this.triggerRefresh}></HeaderItem>
+       <HeaderItem triggerRefresh={this.triggerRefresh} callback={this.handlePicView.bind(this)} picView={this.state.picView}></HeaderItem>
 
-        <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={300} removeClippedSubviews={true}>
+       {!this.state.picView ? (
+        <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={5} removeClippedSubviews={true}>
           {this.renderItem()}
         </Content>
-
+       ) :(
+        <Content>
+          <Thumb photos={this.state.datasetState} navigation={this.props.navigation}></Thumb>
+        </Content>
+       )}
       </Container>
     );
   }
