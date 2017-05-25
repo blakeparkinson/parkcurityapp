@@ -20,6 +20,7 @@ export default class MainItem extends Component {
   constructor(props) {
     super(props);
 
+
     this.recordData = props.record.content;
     this.fomatted_date = Moment(this.recordData.createdAt).tz('America/Denver').format('MM/DD/YY hh:mm a');
   }
@@ -33,6 +34,7 @@ export default class MainItem extends Component {
       <Card key={Math.random()} onLayout={(event) => { this.find_dimensions(event.nativeEvent.layout) }}>
         <CardItem cardBody>
         </CardItem>
+        <CardItem>
             <View style={styles.bottomContent}>
                 <View style={styles.bottomView}>
                     <Icon active name="camera" style={{color: '#046552'}} />
@@ -43,6 +45,7 @@ export default class MainItem extends Component {
                 </View>
 
             </View>
+          </CardItem>
         </Card>
     )
   }
@@ -72,8 +75,7 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       alignItems:'stretch',
       justifyContent:'space-between',
-      backgroundColor: '#eaf1ef',
-      padding:15
+      padding:10
     },
     bottomView:{
       flexDirection:'row',

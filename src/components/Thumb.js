@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Image, StyleSheet, View, Dimensions, Tex, ScrollView, TouchableOpacity} from 'react-native';
 
-import {Container} from 'native-base';
+import {Container, Spinner} from 'native-base';
 
 const win = Dimensions.get('window');
 
@@ -12,9 +12,14 @@ export default class Thumb extends Component {
 
   renderThumbs(){
     const { navigate } = this.props.navigation;
+    if (!this.props.photos.length || !this.props.photos[0].content){
+        return <View style={styles.spinner}><Spinner key={Math.random()}/></View>;
+
+    }
     return this.props.photos.map((photo, index) => {
         if (!photo || !photo.content){
-            return;
+            return <Spinner key={Math.random()}/>;
+
         }
         return (
             <TouchableOpacity onPress={() => {navigate('Image', { photo: photo })}} key={Math.random()}>
@@ -50,5 +55,11 @@ const styles = StyleSheet.create({
     },
     container:{
         backgroundColor: '#01D0A7'
+    },
+    spinner:{
+      flexDirection:'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 3
     }
 });
