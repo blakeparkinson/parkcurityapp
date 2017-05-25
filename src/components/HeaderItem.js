@@ -19,7 +19,6 @@ export default class HeaderItem extends Component {
     this.state = {
        data: null
     }
-    console.log(this.props);
   }
 
   async componentWillMount() { 
@@ -27,7 +26,6 @@ export default class HeaderItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.triggerRefresh){
       this.init();
     }
@@ -71,7 +69,7 @@ export default class HeaderItem extends Component {
              </View>
              <View style={styles.subheader}>
                <Button small outline bordered light onPress={() => {this.viewClick();}}>
-                      <Icon name='md-apps' />
+                    <Icon name='md-apps' />
               </Button>
               {this.props.picView ? (
                   <Text style={styles.text}>List View</Text>

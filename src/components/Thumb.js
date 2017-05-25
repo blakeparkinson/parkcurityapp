@@ -13,6 +13,9 @@ export default class Thumb extends Component {
   renderThumbs(){
     const { navigate } = this.props.navigation;
     return this.props.photos.map((photo, index) => {
+        if (!photo || !photo.content){
+            return;
+        }
         return (
             <TouchableOpacity onPress={() => {navigate('Image', { photo: photo })}} key={Math.random()}>
                 <Image style={styles.photo} source={{uri: photo.content.url}} key={Math.random()}/>

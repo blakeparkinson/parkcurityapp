@@ -60,6 +60,7 @@ class Main extends Component {
     // Set the readOffset to the first record in the state
     dataset.setReadOffset(0);
     this.setState({dataset});
+    this.props.photos = this.state.datasetState;
   }
 
   componentWillMount() {
@@ -91,7 +92,7 @@ class Main extends Component {
 
   setCurrentReadOffset = (event) => {
     this.triggerRefresh = false;
-    let itemHeight = 200;
+    let itemHeight = 75;
     let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
     let newItemIndex = Math.ceil(currentOffset / itemHeight);
     if (this.currentItemIndex != newItemIndex){
@@ -99,16 +100,26 @@ class Main extends Component {
       this.currentItemIndex = newItemIndex;
     }
 
-    if (event.nativeEvent.contentOffset.y < -70){
+    this.checkForRefresh(event);
+  }
+
+  checkForRefresh = (event) =>{
+    var threshold;
+    if (this.state.picView){
+      threshold = -70;
+    }
+    else{
+      threshold = -70;
+    }
+
+    if (event.nativeEvent.contentOffset.y < threshold){
       this.timer = setTimeout(() => {
         //scrolling up refreshes  data
         this.triggerRefresh = true;
         this.setupImpagination();
       }, 300);
     }
-
     else{
-
       //user quickly unscrolled, don't refetch
       clearTimeout(this.timer);
     }
@@ -133,7 +144,7 @@ class Main extends Component {
           {this.renderItem()}
         </Content>
        ) :(
-        <Content>
+        <Content onScroll={this.checkForRefresh} scrollEventThrottle={5}>
           <Thumb photos={this.state.datasetState} navigation={this.props.navigation}></Thumb>
         </Content>
        )}

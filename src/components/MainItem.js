@@ -24,19 +24,23 @@ export default class MainItem extends Component {
     this.fomatted_date = Moment(this.recordData.createdAt).tz('America/Denver').format('MM/DD/YY hh:mm a');
   }
 
+  find_dimensions(e){
+    //console.log(e);
+  }
+
   render(){
     return (
-      <Card key={Math.random()}>
+      <Card key={Math.random()} onLayout={(event) => { this.find_dimensions(event.nativeEvent.layout) }}>
         <CardItem cardBody>
         </CardItem>
             <View style={styles.bottomContent}>
-                <Button transparent>
+                <View style={styles.bottomView}>
                     <Icon active name="camera" style={{color: '#046552'}} />
                     <Text style={styles.camera}>{this.recordData.cameraId}</Text>
-                </Button>
-                <Button transparent>
+                </View>
+                <View style={styles.bottomView}>
                     <Text style={styles.date}>{this.fomatted_date}</Text>
-                </Button>
+                </View>
 
             </View>
         </Card>
@@ -68,6 +72,12 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       alignItems:'stretch',
       justifyContent:'space-between',
-      backgroundColor: '#eaf1ef'
+      backgroundColor: '#eaf1ef',
+      padding:15
+    },
+    bottomView:{
+      flexDirection:'row',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
 });
