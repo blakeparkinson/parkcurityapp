@@ -78,8 +78,7 @@ class Main extends Component {
 
     var props = this.props;
 
-    props.navigation.navigate('Image', { imageId: "5922733ea327d90011bb8e22" })
-
+    //props.navigation.navigate('Image', { imageId: "5922733ea327d90011bb8e22" })
 
     PushNotification.configure({
 
