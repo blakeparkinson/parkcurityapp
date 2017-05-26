@@ -3,6 +3,10 @@ import {Image, StyleSheet, View, Dimensions, Tex, ScrollView, TouchableOpacity} 
 
 import {Container, Spinner} from 'native-base';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import * as ActionCreators from '../actions'
+
 const win = Dimensions.get('window');
 
 export default class Thumb extends Component {

@@ -12,8 +12,12 @@ import { Header, Title, Container, Button, Icon } from 'native-base';
 import SvgUri from 'react-native-svg-uri';
 import Moment from 'moment-timezone';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import * as ActionCreators from '../actions'
 
-export default class HeaderItem extends Component {
+
+class HeaderItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,14 +42,11 @@ export default class HeaderItem extends Component {
   }
 
   setupData(){
-    return fetch(`https://parkcurity.herokuapp.com/photolimit`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return this.formatData(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-    });
+
+    return this.props.getPhotoLimit()
+      .then((response) => {
+        return response;
+    })
   }
 
   render(){
@@ -88,45 +89,6 @@ export default class HeaderItem extends Component {
   viewClick(){
     this.props.callback();            
   }
-  formatData(data){
-    var buckets = {};
-    for (let item of data){
-      var hour = Moment(item.createdAt).tz('America/Denver').format('H');
-      if (buckets[hour]){
-        buckets[hour] = buckets[hour] + 1;
-      }
-      else{
-        buckets[hour] = {};
-        buckets[hour] = 1
-      }
-
-    }
-    
-    var keys = Object.keys(buckets);
-    var maxKey = keys[0];
-    for (var i = 0; i < keys.length;  i++ ){
-      if(buckets[keys[i +1 ]] > buckets[keys[i]]){
-        maxKey = keys[i +1 ];
-      }
-    }
-
-    var display = '';
-    if (maxKey){
-      if (maxKey > 12){
-        display = (maxKey - 12) + 'pm';
-      }
-      else {
-        display = maxKey + 'am';
-      }
-    }
-
-    var items = {
-      count: data.length,
-      hotHour: display
-    };
-    return items;
-  }
-
   
 }
 
@@ -163,3 +125,16 @@ const styles = StyleSheet.create({
   }
   
 });
+
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    data: state.data
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderItem);

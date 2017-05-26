@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView} from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
+import PushNotification from 'react-native-push-notification';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import * as ActionCreators from '../actions'
 
 import MainItem from './MainItem';
 import HeaderItem from './HeaderItem';
@@ -36,6 +41,8 @@ class Main extends Component {
 
 
   setupImpagination() {
+
+    var props = this.props;
     let dataset = new Dataset({
       pageSize: 10,
       loadHorizon: 10,
@@ -49,11 +56,11 @@ class Main extends Component {
 
       // Where to fetch the data from.
       fetch(pageOffset, pageSize, stats) {
-        return fetch(`https://parkcurity.herokuapp.com/photo?offset=${pageOffset}&limit=${pageSize}`)
-          .then(response => response.json())
-          .catch((error) => {
-            console.error(error);
-          });
+
+        return props.getPhotos(pageOffset, pageSize)
+           .then((response) => {
+             return response.json();
+           })
       }
     });
 
@@ -65,6 +72,50 @@ class Main extends Component {
 
   componentWillMount() {
     this.setupImpagination();
+  }
+
+  componentDidMount(){
+
+    var props = this.props;
+
+    props.navigation.navigate('Image', { imageId: "5922733ea327d90011bb8e22" })
+
+
+    PushNotification.configure({
+
+    // (optional) Called when Token is generated (iOS and Android)
+    onRegister: function(token) {
+        console.log( 'TOKEN:', token );
+        props.saveToken(token);
+    },
+
+    // (required) Called when a remote or local notification is opened or received
+    onNotification: function(notification) {
+        console.log( 'NOTIFICATION:', notification );
+        props.navigation.navigate('Image', { imageId: notification.data.imageId })
+    },
+
+    // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+    senderID: "YOUR GCM SENDER ID",
+
+    // IOS ONLY (optional): default: all - Permissions to register.
+    permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+    },
+
+    // Should the initial notification be popped automatically
+    // default: true
+    popInitialNotification: true,
+
+    /**
+      * (optional) default: true
+      * - Specified if permissions (ios) and token (android and ios) will requested or not,
+      * - if not, you must call PushNotificationsHandler.requestPermissions() later
+      */
+    requestPermissions: true,
+    });
   }
 
   handlePicView(){
@@ -92,7 +143,7 @@ class Main extends Component {
 
   setCurrentReadOffset = (event) => {
     this.triggerRefresh = false;
-    let itemHeight = 75;
+    let itemHeight = 64;
     let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
     let newItemIndex = Math.ceil(currentOffset / itemHeight);
     if (this.currentItemIndex != newItemIndex){
@@ -175,4 +226,14 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    dataSet: state.datasetState
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

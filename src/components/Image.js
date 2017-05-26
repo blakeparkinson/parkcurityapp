@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { Container } from 'native-base';
+import { Container, Spinner } from 'native-base';
 
 import PhotoView from 'react-native-photo-view';
 
 const win = Dimensions.get('window');
 import Moment from 'moment-timezone';
 
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import * as ActionCreators from '../actions'
 
 class Image extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      photo: {}
+    }
+  }
   static navigationOptions = {
     title: 'Photo',
      headerStyle: {
@@ -21,14 +31,33 @@ class Image extends Component {
     }
   }
 
+    componentWillMount() {
+      console.log(this.props);
+      if (this.props.navigation.state.params.imageId){
+        this.props.getPhotoById(this.props.navigation.state.params.imageId).then((response) =>{
+          console.log(response);
+          this.setState({photo: response});
+
+        });
+      }
+      else{
+        this.setState({photo: this.props.navigation.state.params.photo.content});
+
+      }
+    }
+
   render() {
-    const { params } = this.props.navigation.state;
-    var fomatted_date = Moment(params.photo.content.createdAt).tz('America/Denver').format('MM/DD/YY hh:mm a');
+
+
+    if (!this.state.photo){
+       return <View style={styles.spinner}><Spinner key={Math.random()}/></View>
+    }
+    var fomatted_date = Moment(this.state.photo.createdAt).tz('America/Denver').format('MM/DD/YY hh:mm a');
     return (
       <View style={styles.parent}> 
         <View style={styles.main}>
           <PhotoView
-          source={{uri: params.photo.content.url}}
+          source={{uri: this.state.photo.url}}
           minimumZoomScale={0.5}
           maximumZoomScale={3}
           androidScaleType="center"
@@ -39,7 +68,7 @@ class Image extends Component {
           <Text style={styles.text}>Pinch to Manipulate</Text>
         </View>
         <View style={styles.bottom2}>
-           <Text style={styles.camera}>Camera ID: {params.photo.content.cameraId}</Text>
+           <Text style={styles.camera}>Camera ID: {this.state.photo.cameraId}</Text>
            <Text style={styles.date}>{fomatted_date}</Text>
         </View>
       </View>
@@ -82,6 +111,22 @@ const styles = StyleSheet.create({
       fontFamily: 'Helvetica Neue',
       color: 'white'
     },
+    spinner:{
+      flexDirection:'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 3
+    }
 });
 
-export default Image;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    params: {}
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Image);
