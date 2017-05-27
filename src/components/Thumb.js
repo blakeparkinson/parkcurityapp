@@ -22,7 +22,7 @@ export default class Thumb extends Component {
     }
     return this.props.photos.map((photo, index) => {
         if (!photo || !photo.content){
-            return <Spinner key={Math.random()}/>;
+            return;
 
         }
         return (

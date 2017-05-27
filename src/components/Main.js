@@ -52,7 +52,6 @@ class Main extends Component {
       // Anytime there's a new state emitted, we want to set that on
       // the componets local state.
       observe: (datasetState) => {
-        this.setState({refreshing: false});
         this.setState({datasetState});
       },
 
@@ -66,7 +65,7 @@ class Main extends Component {
                 
                 that.setState({refreshing: false});
 
-            }, 300);
+            }, 1000);
 
              return p;
            })
@@ -180,11 +179,7 @@ class Main extends Component {
       }
       
     }
-    else{
-
-      this.setState({refreshing: false});
-      //user quickly unscrolled, don't refetch
-    }
+    
   }
 
   onRefresh = (event) => {
