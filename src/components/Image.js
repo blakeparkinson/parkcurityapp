@@ -34,7 +34,6 @@ class Image extends Component {
     componentWillMount() {
       if (this.props.navigation.state.params.imageId){
         this.props.getPhotoById(this.props.navigation.state.params.imageId).then((response) =>{
-          console.log(response);
           this.setState({photo: response});
 
         });
