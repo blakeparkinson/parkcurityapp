@@ -17,7 +17,7 @@ class Image extends Component {
     super(props);
 
     this.state = {
-      photo: {}
+      photo: undefined
     }
   }
   static navigationOptions = {
@@ -32,7 +32,6 @@ class Image extends Component {
   }
 
     componentWillMount() {
-      console.log(this.props);
       if (this.props.navigation.state.params.imageId){
         this.props.getPhotoById(this.props.navigation.state.params.imageId).then((response) =>{
           console.log(response);

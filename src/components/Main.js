@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView} from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView, RefreshControl} from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
 import PushNotification from 'react-native-push-notification';
@@ -19,7 +19,8 @@ class Main extends Component {
     this.state = {
       dataset: null,
       datasetState: null,
-      picView: false
+      picView: false,
+      refreshing: false
     };
     this.triggerRefresh = false;
     this.timer = false;
@@ -43,14 +44,15 @@ class Main extends Component {
   setupImpagination() {
 
     var props = this.props;
+    var that = this;
     let dataset = new Dataset({
       pageSize: 10,
       loadHorizon: 10,
 
-
       // Anytime there's a new state emitted, we want to set that on
       // the componets local state.
       observe: (datasetState) => {
+        this.setState({refreshing: false});
         this.setState({datasetState});
       },
 
@@ -59,7 +61,14 @@ class Main extends Component {
 
         return props.getPhotos(pageOffset, pageSize)
            .then((response) => {
-             return response.json();
+             var p = response.json();
+             setTimeout(() => {
+                
+                that.setState({refreshing: false});
+
+            }, 300);
+
+             return p;
            })
       }
     });
@@ -163,18 +172,28 @@ class Main extends Component {
     }
 
     if (event.nativeEvent.contentOffset.y < threshold){
-      this.timer = setTimeout(() => {
-        //scrolling up refreshes  data
-        this.triggerRefresh = true;
-        this.setupImpagination();
-      }, 300);
+
+      if (!this.state.refreshing){
+        this.setState({refreshing: true});
+          //scrolling up refreshes  data
+          this.setupImpagination();
+      }
+      
     }
     else{
+
+      this.setState({refreshing: false});
       //user quickly unscrolled, don't refetch
-      clearTimeout(this.timer);
     }
   }
 
+  onRefresh = (event) => {
+    if (!this.state.refreshing){
+      this.setState({refreshing: true});
+      this.setupImpagination();
+    }
+
+  }
 
   
 
@@ -190,13 +209,19 @@ class Main extends Component {
        <HeaderItem triggerRefresh={this.triggerRefresh} callback={this.handlePicView.bind(this)} picView={this.state.picView}></HeaderItem>
 
        {!this.state.picView ? (
-        <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={5} removeClippedSubviews={true}>
+        <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={1} removeClippedSubviews={true}>
           {this.renderItem()}
         </Content>
        ) :(
-        <Content onScroll={this.checkForRefresh} scrollEventThrottle={5}>
+        <ScrollView 
+          refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh.bind(this)}
+          />
+        }>
           <Thumb photos={this.state.datasetState} navigation={this.props.navigation}></Thumb>
-        </Content>
+        </ScrollView>
        )}
       </Container>
     );
