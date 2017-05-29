@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView, RefreshControl} from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView, RefreshControl, AsyncStorage} from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
 import PushNotification from 'react-native-push-notification';
@@ -52,6 +52,7 @@ class Main extends Component {
       // Anytime there's a new state emitted, we want to set that on
       // the componets local state.
       observe: (datasetState) => {
+        this.setState({refreshing: false});
         this.setState({datasetState});
       },
 
@@ -99,7 +100,26 @@ class Main extends Component {
     // (required) Called when a remote or local notification is opened or received
     onNotification: function(notification) {
         console.log( 'NOTIFICATION:', notification );
-        props.navigation.navigate('Image', { imageId: notification.data.imageId })
+        props.navigation.navigate('Image', { imageId: notification.data.imageId });
+        PushNotification.setApplicationIconBadgeNumber(0);
+
+
+          /*try {
+            
+            AsyncStorage.getItem('badgeCount', (err, result) => {
+              var count = 0;
+              if (!err && result){
+                count = result;
+              }
+              AsyncStorage.setItem('badgeCount', count + 1);
+              
+            });
+          } 
+          catch (error) {
+            // Error saving data
+            console.log(error);
+          }*/
+        
     },
 
     // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)

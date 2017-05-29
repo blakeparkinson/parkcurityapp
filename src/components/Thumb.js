@@ -17,8 +17,7 @@ export default class Thumb extends Component {
   renderThumbs(){
     const { navigate } = this.props.navigation;
     if (!this.props.photos.length || !this.props.photos[0].content){
-        return <View style={styles.spinner}><Spinner key={Math.random()}/></View>;
-
+        return;
     }
     return this.props.photos.map((photo, index) => {
         if (!photo || !photo.content){
