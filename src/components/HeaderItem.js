@@ -50,14 +50,16 @@ class HeaderItem extends Component {
   }
 
   render(){
+    const { navigate } = this.props.navigation;
     return (
        <View style={styles.header}>
              <View style={styles.subheader}>
-               <SvgUri width="40" height="40" fill="#E3E3E3" source={require('../img/fireclock.svg')} />
-               <Text style={styles.text}>Hottest Hour:</Text>
-               {this.state.data &&
-                   <Text style={styles.text2}>{this.state.data.hotHour}</Text>
-               }
+               <Button small outline bordered light onPress={() => navigate('Video', { })}>
+                    <Icon name='videocam' />
+              </Button>
+              <Text style={styles.text}>Live Stream</Text>
+
+
              </View>
              <View style={styles.subheader}>
                <SvgUri style={styles.badGuy} width="40" height="40" fill="#E3E3E3" source={require('../img/badguy.svg')} />
