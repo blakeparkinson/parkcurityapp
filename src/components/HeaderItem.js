@@ -49,48 +49,128 @@ class HeaderItem extends Component {
     })
   }
 
+  handleNav(){
+
+    if (this.props.viewMode == 'list'){
+      this.props.navigation.navigate('ThumbPage', { });
+    }
+    else{
+        this.props.navigation.goBack();
+    }
+  }
+
+  textStyle(){
+    if (this.props.viewMode == 'list'){
+      return {
+        color: 'white',
+      fontSize: 10,
+      fontFamily: 'Noteworthy',
+      marginTop: 10
+      }
+    }
+    else{
+      return {
+        color: '#01D0A7',
+        fontSize: 10,
+        fontFamily: 'Noteworthy',
+        marginTop: 10
+      }
+    }
+  }
+
+  headerStyle(){
+    var hStyle = {
+        backgroundColor: '#01D0A7',
+        flexDirection:'row',
+        alignItems:'stretch',
+        justifyContent:'space-between',
+        padding:20
+    };
+    if (this.props.viewMode == 'picture'){
+      hStyle.backgroundColor = 'white';
+    }
+    return hStyle;
+  }
+
+  textStyle2(){
+    var t2Style = {
+      color: 'white',
+      fontSize: 14,
+      fontFamily: 'Noteworthy',
+      fontWeight: 'bold'
+    };
+
+    if (this.props.viewMode == 'picture'){
+      t2Style.color = '#01D0A7';
+    }
+    return t2Style;
+  }
+
+  buttonStyle(){
+
+    var bStyle = {
+      borderColor: 'white',
+    };
+    if (this.props.viewMode == 'picture'){
+      bStyle.borderColor = '#01D0A7';
+    }
+    return bStyle;
+  }
+
+  iconStyle(){
+
+    var iStyle = {
+      color: 'white',
+    };
+    if (this.props.viewMode == 'picture'){
+      iStyle.color = '#01D0A7';
+    }
+    return iStyle;
+  }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
-       <View style={styles.header}>
+      <View>
+       <View style={this.headerStyle()}>
              <View style={styles.subheader}>
-               <Button small outline bordered light onPress={() => navigate('Video', { })}>
-                    <Icon name='videocam' />
+               <Button small outline bordered style={this.buttonStyle()} onPress={() => navigate('Video', { })}>
+                    <Icon style={this.iconStyle()} name='videocam' />
               </Button>
-              <Text style={styles.text}>Live Stream</Text>
+              <Text style={this.textStyle()}>Live Stream</Text>
 
 
              </View>
              <View style={styles.subheader}>
                <SvgUri style={styles.badGuy} width="40" height="40" fill="#E3E3E3" source={require('../img/badguy.svg')} />
-               <Text style={styles.text}>Bad Guys:</Text>
+               <Text style={this.textStyle()}>Bad Guys:</Text>
               {this.state.data &&
 
-                <Text style={styles.text2}>{this.state.data.count}</Text>
+                <Text style={this.textStyle2()}>{this.state.data.count}</Text>
               }
 
              </View>
+             
              <View style={styles.subheader}>
-               <Button small outline bordered light onPress={() => {this.viewClick();}}>
-                    <Icon name='md-apps' />
+               <Button small outline bordered style={this.buttonStyle()} onPress={() => this.handleNav()}>
+                    <Icon style={this.iconStyle()} name='md-apps' />
               </Button>
-              {this.props.picView ? (
-                  <Text style={styles.text}>List View</Text>
+              {this.props.viewMode == 'list' ? (
+                  <Text style={this.textStyle()}>Picture View</Text>
               ):(
 
-                  <Text style={styles.text}>Picture View</Text>
+                  <Text style={this.textStyle()}>List View</Text>
               )}
 
              </View>
 
           
         </View>
+        
+        </View>
     );
   }
 
-  viewClick(){
-    this.props.callback();            
-  }
   
 }
 
@@ -107,12 +187,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center'
   },
-  text:{
-    color: 'white',
-    fontSize: 10,
-    fontFamily: 'Noteworthy',
-    marginTop: 10
-  },
   text2:{
     color: 'white',
     fontSize: 14,
@@ -124,6 +198,10 @@ const styles = StyleSheet.create({
   },
   button:{
     backgroundColor: '#eaf1ef'
+  },
+  buttonBlock:{
+    backgroundColor: '#01D0A7',
+    color:'white'
   }
   
 });

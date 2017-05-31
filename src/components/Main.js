@@ -161,7 +161,7 @@ class Main extends Component {
         if (!record.isSettled) {
           return <Spinner key={Math.random()}/>;
         }
-        return <TouchableOpacity onPress={() => {navigate('Image', { photo: record })}} key={index}>
+        return <TouchableOpacity onPress={() => {navigate('Image', { photo: record.content })}} key={index}>
                   <MainItem record={record} key={index} indexPass={index}/>
                 </TouchableOpacity>;
     })
@@ -221,24 +221,12 @@ class Main extends Component {
     return (
       <Container>
 
-       <HeaderItem triggerRefresh={this.triggerRefresh} callback={this.handlePicView.bind(this)} picView={this.state.picView} navigation={this.props.navigation}></HeaderItem>
+       <HeaderItem viewMode='list' navigation={this.props.navigation}></HeaderItem>
 
-       {!this.state.picView ? (
         <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={1} removeClippedSubviews={true}>
           
           {this.renderItem()}
         </Content>
-       ) :(
-        <ScrollView 
-          refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this.onRefresh.bind(this)}
-          />
-        }>
-          <Thumb photos={this.state.datasetState} navigation={this.props.navigation}></Thumb>
-        </ScrollView>
-       )}
       </Container>
     );
   }

@@ -39,7 +39,7 @@ class Image extends Component {
         });
       }
       else{
-        this.setState({photo: this.props.navigation.state.params.photo.content});
+        this.setState({photo: this.props.navigation.state.params.photo});
 
       }
     }

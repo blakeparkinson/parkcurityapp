@@ -36,6 +36,7 @@ export default class Thumb extends Component {
   render(){
     return (
       <Container>
+         <HeaderItem navigation={this.props.navigation}></HeaderItem>
           <ScrollView>
             <View style={styles.thumbs}>
                 {this.renderThumbs()}
