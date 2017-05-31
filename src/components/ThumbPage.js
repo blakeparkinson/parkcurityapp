@@ -16,7 +16,7 @@ class ThumbPage extends Component {
     this.state = 
         {   
             offset: 0,
-            limit: 20,
+            limit: 15,
             refreshing: false,
             fetching: false
         };
@@ -27,7 +27,7 @@ class ThumbPage extends Component {
       this.init();
   }
 
-  async init(offset = 0, limit = 20){
+  async init(offset = 0, limit = 15){
     var pics = await this.setupData(offset, limit);
     console.log(pics);
     this.setState(
@@ -56,7 +56,7 @@ class ThumbPage extends Component {
             fetching: true
         }
       );
-      this.init(this.state.offset, 20);
+      this.init(this.state.offset, 15);
 
     }
 
