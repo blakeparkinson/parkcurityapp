@@ -17,6 +17,7 @@
     "react-native": "0.43.0",
     "react-native-http-cache": "^0.2.0",
     "react-native-infinite-scroll-view": "^0.4.2",
+    "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
     "react-native-photo-view": "^1.2.0",
     "react-native-push-notification": "^3.0.0",
     "react-native-svg-uri": "^1.2.0",

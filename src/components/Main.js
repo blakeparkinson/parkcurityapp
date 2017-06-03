@@ -3,6 +3,8 @@ import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, 
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
 import PushNotification from 'react-native-push-notification';
+import Orientation from 'react-native-orientation';
+
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
@@ -84,6 +86,7 @@ class Main extends Component {
   }
 
   componentDidMount(){
+    Orientation.lockToPortrait();
 
     var props = this.props;
 

@@ -12,7 +12,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTPushNotificationManager.h"
-
+#import "Orientation.h" // <--- import
 
 
 @implementation AppDelegate
@@ -61,6 +61,11 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
 [RCTPushNotificationManager didReceiveLocalNotification:notification];
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window 
+{
+return [Orientation getOrientation];
 }
 
 @end

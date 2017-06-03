@@ -1,6 +1,7 @@
 package com.parkcurity;
 
 import com.facebook.react.ReactActivity;
+import com.github.yamill.orientation.OrientationPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 
 public class MainActivity extends ReactActivity {

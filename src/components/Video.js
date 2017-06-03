@@ -4,6 +4,8 @@ import {Container} from 'native-base';
 
 const win = Dimensions.get('window');
 
+var Orientation = require('react-native-orientation');
+
 export default class Video extends Component {
   constructor(props) {
     super(props);
@@ -23,9 +25,34 @@ export default class Video extends Component {
     }
   }
 
-    onNavigationStateChange(navState) {
+  componentDidMount(){
 
-    }
+      Orientation.unlockAllOrientations();
+      Orientation.addOrientationListener(this.orientationDidChange);
+
+  }
+
+  componentWillUnmount() {
+    Orientation.getOrientation((err, orientation) => {
+      console.log(`Current Device Orientation: ${orientation}`);
+    });
+
+
+    // Remember to remove listener
+    Orientation.removeOrientationListener(this._orientationDidChange);
+    Orientation.lockToPortrait();
+
+  }
+
+
+  orientationDidChange(orientation){
+
+    console.log('suh')
+  }
+
+  onNavigationStateChange(navState){
+
+  }
 
 
 render(){

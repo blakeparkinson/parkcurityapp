@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Image, StyleSheet, View, Dimensions, Text, ScrollView, TouchableOpacity, RefreshControl} from 'react-native';
 import {Container, Button} from 'native-base';
+import Orientation from 'react-native-orientation';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -36,6 +37,14 @@ class ThumbPage extends Component {
         }
       )
   }
+
+  componentDidMount() {
+    // this locks the view to Portrait Mode
+    Orientation.lockToPortrait();
+
+  }
+
+
 
   setupData(offset, limit){
 
@@ -108,7 +117,7 @@ render(){
     <Button block light onPress={this.loadMore}>
         <Text style={{color: '#01D0A7'}}>Load More</Text>
     </Button>
-      <ScrollView
+      <ScrollView style={{backgroundColor: '#01D0A7'}}
           refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}

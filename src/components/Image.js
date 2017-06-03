@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Container, Spinner } from 'native-base';
+import Orientation from 'react-native-orientation';
+
 
 import PhotoView from 'react-native-photo-view';
 
@@ -43,6 +45,12 @@ class Image extends Component {
 
       }
     }
+
+    componentDidMount() {
+     // this locks the view to Portrait Mode
+      Orientation.lockToPortrait();
+
+  }
 
   render() {
 
