@@ -36,11 +36,9 @@ export default class Video extends Component {
     Orientation.getOrientation((err, orientation) => {
       console.log(`Current Device Orientation: ${orientation}`);
     });
-
-
-    // Remember to remove listener
-    Orientation.removeOrientationListener(this._orientationDidChange);
     Orientation.lockToPortrait();
+    // Remember to remove listener
+    Orientation.removeOrientationListener(this.orientationDidChange);
 
   }
 
