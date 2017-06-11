@@ -5,7 +5,8 @@ import {
   StyleSheet,
   View,
   Right,
-  Left
+  Left,
+  Switch
 } from 'react-native';
 
 import { Header, Title, Container, Button, Icon } from 'native-base';
@@ -21,7 +22,8 @@ class HeaderItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       data: null
+       data: null,
+       isMotion: false
     }
   }
 
@@ -52,7 +54,7 @@ class HeaderItem extends Component {
   handleNav(){
 
     if (this.props.viewMode == 'list'){
-      this.props.navigation.navigate('ThumbPage', { });
+      this.props.navigation.navigate('ThumbPage', { isMotion: this.props.motionValue});
     }
     else{
         this.props.navigation.goBack();
@@ -78,17 +80,23 @@ class HeaderItem extends Component {
     }
   }
 
+  mainStyle(){
+    var mstyle={
+      backgroundColor: '#01D0A7',
+      padding:20
+    };
+    if (this.props.viewMode == 'picture'){
+      mstyle.backgroundColor = 'white';
+    }
+    return mstyle;
+  }
+
   headerStyle(){
     var hStyle = {
-        backgroundColor: '#01D0A7',
         flexDirection:'row',
         alignItems:'stretch',
         justifyContent:'space-between',
-        padding:20
     };
-    if (this.props.viewMode == 'picture'){
-      hStyle.backgroundColor = 'white';
-    }
     return hStyle;
   }
 
@@ -128,10 +136,19 @@ class HeaderItem extends Component {
     return iStyle;
   }
 
+  valueChange(value){
+    this.setState({isMotion: value});
+
+    setTimeout( () => {
+      this.props.switchValueChange(value);
+
+    },300);
+  }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
-      <View>
+      <View style={this.mainStyle()}>
        <View style={this.headerStyle()}>
              <View style={styles.subheader}>
                <Button small outline bordered style={this.buttonStyle()} onPress={() => navigate('Video', { })}>
@@ -163,10 +180,17 @@ class HeaderItem extends Component {
               )}
 
              </View>
-
-          
+             
         </View>
-        
+        <View style={styles.switch}>
+            <Text style={this.textStyle()}>All Motion</Text>
+
+              <Switch
+            onValueChange={(value) => this.valueChange(value)}
+            style={{marginBottom: 10, marginLeft: 10}}
+            value={this.state.isMotion} onTintColor="#046552"/>
+            </View>
+
         </View>
     );
   }
@@ -176,11 +200,9 @@ class HeaderItem extends Component {
 
 const styles = StyleSheet.create({
   header:{
-    backgroundColor: '#01D0A7',
     flexDirection:'row',
     alignItems:'stretch',
     justifyContent:'space-between',
-    padding:20
   },
   subheader:{
     flexDirection:'column',
@@ -202,8 +224,11 @@ const styles = StyleSheet.create({
   buttonBlock:{
     backgroundColor: '#01D0A7',
     color:'white'
-  }
-  
+  },
+  switch:{
+    flexDirection:'row',
+    justifyContent:'flex-end'
+  }  
 });
 
 

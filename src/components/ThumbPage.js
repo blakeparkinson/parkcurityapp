@@ -19,7 +19,8 @@ class ThumbPage extends Component {
             offset: 0,
             limit: 15,
             refreshing: false,
-            fetching: false
+            fetching: false,
+            isMotion: false
         };
       
   }
@@ -45,16 +46,36 @@ class ThumbPage extends Component {
   }
 
 
+  valueChange(value){
 
+    this.setState({ isMotion: value, offset: 0});
+    setTimeout(()=>{
+          this.init();
+    }, 200);
+
+  }
   setupData(offset, limit){
 
-    return this.props.getPhotos(offset, limit)
-      .then((response) => {
-        this.setState({refreshing: false, fetching: false});
-        var pics = response.json();
-        
-        return pics;
-    })
+    if (!this.state.isMotion){
+      return this.props.getPhotos(offset, limit)
+        .then((response) => {
+          this.setState({refreshing: false, fetching: false});
+          var pics = response.json();
+          
+          return pics;
+      })
+    }
+    else{
+
+      return this.props.getMotion(offset, limit)
+        .then((response) => {
+          this.setState({refreshing: false, fetching: false});
+          var pics = response.json();
+          
+          return pics;
+      })
+
+    }
   }
 
   loadMore = (event) => {
@@ -113,7 +134,7 @@ renderThumbs(){
 render(){
     return (
     <View>
-    <HeaderItem navigation={this.props.navigation} viewMode="picture"></HeaderItem>
+    <HeaderItem navigation={this.props.navigation} viewMode="picture" switchValueChange={this.valueChange.bind(this)}></HeaderItem>
     <Button block light onPress={this.loadMore}>
         <Text style={{color: '#01D0A7'}}>Load More</Text>
     </Button>

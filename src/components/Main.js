@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView, RefreshControl, WebView} from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView, RefreshControl, WebView, Switch} from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Icon, Button, Header, Title, Spinner} from 'native-base';
 import Dataset from 'impagination';
 import PushNotification from 'react-native-push-notification';
@@ -15,15 +15,15 @@ import HeaderItem from './HeaderItem';
 import Thumb from './Thumb';
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+  state = {
       dataset: null,
       datasetState: null,
       picView: false,
-      refreshing: false
+      refreshing: false,
+      isMotion: false
     };
+  constructor(props) {
+    super(props);
     this.triggerRefresh = false;
     this.timer = false;
     this.currentItemIndex = 0;
@@ -43,7 +43,7 @@ class Main extends Component {
   }
 
 
-  setupImpagination() {
+  setupImpagination(isMotion = false) {
 
     var props = this.props;
     var that = this;
@@ -61,7 +61,8 @@ class Main extends Component {
       // Where to fetch the data from.
       fetch(pageOffset, pageSize, stats) {
 
-        return props.getPhotos(pageOffset, pageSize)
+        if (that.state.isMotion){
+          return props.getMotion(pageOffset, pageSize)
            .then((response) => {
              var p = response.json();
              setTimeout(() => {
@@ -72,6 +73,22 @@ class Main extends Component {
 
              return p;
            })
+
+        }
+        else{
+          return props.getPhotos(pageOffset, pageSize)
+           .then((response) => {
+             var p = response.json();
+             setTimeout(() => {
+                
+                that.setState({refreshing: false});
+
+            }, 1000);
+
+             return p;
+           })
+        }
+        
       }
     });
 
@@ -213,6 +230,13 @@ class Main extends Component {
 
   }
 
+  valueChange(value){
+    this.setState({ isMotion: value});
+    setTimeout(()=>{
+          this.setupImpagination();
+    }, 200);
+  }
+
   
 
   render() {
@@ -224,8 +248,7 @@ class Main extends Component {
     return (
       <Container>
 
-       <HeaderItem viewMode='list' navigation={this.props.navigation}></HeaderItem>
-
+       <HeaderItem viewMode='list' navigation={this.props.navigation} switchValueChange={this.valueChange.bind(this)}></HeaderItem>
         <Content onScroll={this.setCurrentReadOffset} scrollEventThrottle={1} removeClippedSubviews={true}>
           
           {this.renderItem()}

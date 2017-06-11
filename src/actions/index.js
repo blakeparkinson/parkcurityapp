@@ -2,10 +2,36 @@ import * as types from './types';
 import Moment from 'moment-timezone';
 
 
+var isMotion = false;
+
 export function getPhotos(pageOffset, pageSize){
   var obj = formatRequest('get');
    return (dispatch, getState) => {
     return fetch (`https://parkcurity.herokuapp.com/photo?offset=${pageOffset}&limit=${pageSize}`, obj)
+        .then((response) => {
+          return(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+}
+
+export function getMotionValue(){
+
+  return isMotion;
+}
+
+export function setMotion(value){
+
+  isMotion = value;
+
+}
+
+export function getMotion(pageOffset, pageSize){
+  var obj = formatRequest('get');
+   return (dispatch, getState) => {
+    return fetch (`https://parkcurity.herokuapp.com/motion?offset=${pageOffset}&limit=${pageSize}`, obj)
         .then((response) => {
           return(response);
         })
