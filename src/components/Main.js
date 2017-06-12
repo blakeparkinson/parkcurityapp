@@ -181,8 +181,9 @@ class Main extends Component {
         if (!record.isSettled) {
           return <Spinner key={Math.random()}/>;
         }
+        
         return <TouchableOpacity onPress={() => {navigate('Image', { photo: record.content })}} key={index}>
-                  <MainItem record={record} key={index} indexPass={index}/>
+                  <MainItem record={record} isMotion={this.state.isMotion} key={index} indexPass={index}/>
                 </TouchableOpacity>;
     })
 

@@ -29,7 +29,53 @@ export default class MainItem extends Component {
     //console.log(e);
   }
 
+  getLabels(record){
+    if (!record.labels || !record.labels.length){
+      return '';
+    }
+
+    var limit = 3;
+    var labelArray = [];
+    for (var i = 0; i < record.labels.length; i++){
+      if (labelArray.length < 3){
+        labelArray.push(record.labels[i].Name);
+      }
+      else{
+        break;
+      }
+
+    }
+    return labelArray.toString();
+  }
+
+
+  getConfidence(record){
+    var stringItem = '';
+
+    if (!record.labels || !record.labels.length){
+      return stringItem;
+    }
+    var stringItem;
+    var validEntries = [ 'People', 'Person', 'Human', 'Group', 'Animal'];
+        for (var i = 0; i < record.labels.length; i++){
+          if (validEntries.indexOf(record.labels[i].Name) > -1){
+            item = record.labels[i];
+            stringItem = `${item.Name}: ${Math.round( item.Confidence * 10 ) / 10}%` 
+            break;
+          }
+        }
+    return stringItem;
+  }
+
   render(){
+    var renderItem;
+    if (this.props.isMotion){
+        renderItem = this.getLabels(this.recordData);
+      }
+    else{
+      renderItem = this.getConfidence(this.recordData);
+    }
+
     return (
       <Card key={Math.random()} onLayout={(event) => { this.find_dimensions(event.nativeEvent.layout) }}>
         <CardItem cardBody>
@@ -37,8 +83,7 @@ export default class MainItem extends Component {
         <CardItem>
             <View style={styles.bottomContent}>
                 <View style={styles.bottomView}>
-                    <Icon active name="camera" style={{color: '#046552'}} />
-                    <Text style={styles.camera}>{this.recordData.cameraId}</Text>
+                    <Text style={styles.camera}>{renderItem}</Text>
                 </View>
                 <View style={styles.bottomView}>
                     <Text style={styles.date}>{this.fomatted_date}</Text>
