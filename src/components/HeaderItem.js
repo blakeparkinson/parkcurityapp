@@ -188,7 +188,7 @@ class HeaderItem extends Component {
               <Switch
             onValueChange={(value) => this.valueChange(value)}
             style={{marginBottom: 10, marginLeft: 10}}
-            value={this.state.isMotion} onTintColor="#046552"/>
+            value={this.state.isMotion} onTintColor="#c1e1fd"/>
             </View>
 
         </View>

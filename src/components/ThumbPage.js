@@ -138,7 +138,7 @@ render(){
     <Button block light onPress={this.loadMore}>
         <Text style={{color: '#01D0A7'}}>Load More</Text>
     </Button>
-      <ScrollView style={{backgroundColor: '#01D0A7'}}
+      <ScrollView style={this.state.isMotion? {backgroundColor: '#c1e1fd'} : {backgroundColor: '#01D0A7'}}
           refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}

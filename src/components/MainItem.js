@@ -67,6 +67,14 @@ export default class MainItem extends Component {
     return stringItem;
   }
 
+  cardStyle(){
+    if (this.props.isMotion){
+      return {
+        backgroundColor: '#c1e1fd'
+      };
+    }
+  }
+
   render(){
     var renderItem;
     if (this.props.isMotion){
@@ -80,15 +88,12 @@ export default class MainItem extends Component {
       <Card key={Math.random()} onLayout={(event) => { this.find_dimensions(event.nativeEvent.layout) }}>
         <CardItem cardBody>
         </CardItem>
-        <CardItem>
+        <CardItem style={this.cardStyle()}>
             <View style={styles.bottomContent}>
                 <View style={styles.bottomView}>
                     <Text style={styles.camera}>{renderItem}</Text>
-                </View>
-                <View style={styles.bottomView}>
                     <Text style={styles.date}>{this.fomatted_date}</Text>
                 </View>
-
             </View>
           </CardItem>
         </Card>
@@ -107,24 +112,25 @@ const styles = StyleSheet.create({
     flex:1, width: 300, height: 225
   },
     date:{
-      alignItems: 'flex-end',
       fontFamily: 'Helvetica Neue',
-      color: '#878686'
+      color: '#878686',
+      alignItems: 'flex-end'
     },
     camera:{
       fontFamily: 'Helvetica Neue',
-      color: '#878686'
+      color: '#046552',
+      fontSize:10
     },
     bottomContent:{
-      flex:1,
       flexDirection:'row',
-      alignItems:'stretch',
-      justifyContent:'space-between',
-      padding:10
+      padding:10,
+      alignItems: 'center',
+    justifyContent: 'center'
     },
     bottomView:{
+      flex: 1,
       flexDirection:'row',
-      alignItems: 'center',
-      justifyContent: 'center'
+     alignItems: 'center',
+    justifyContent: 'space-between'
     }
 });
