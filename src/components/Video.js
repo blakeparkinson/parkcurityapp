@@ -45,7 +45,6 @@ export default class Video extends Component {
 
   orientationDidChange(orientation){
 
-    console.log('suh')
   }
 
   onNavigationStateChange(navState){
