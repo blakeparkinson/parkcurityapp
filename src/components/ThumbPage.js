@@ -31,7 +31,6 @@ class ThumbPage extends Component {
 
   async init(offset = 0, limit = 15){
     var pics = await this.setupData(offset, limit);
-    console.log(pics);
     this.setState(
         {   
             data: pics
