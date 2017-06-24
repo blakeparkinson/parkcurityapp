@@ -43,14 +43,6 @@ export default class Video extends Component {
   }
 
 
-  orientationDidChange(orientation){
-
-  }
-
-  onNavigationStateChange(navState){
-
-  }
-
 
 render(){
       var html = '<!DOCTYPE html><html><body><script>window.location.hash = 1;document.title = document.height;</script></body></html>';
