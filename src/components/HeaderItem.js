@@ -183,7 +183,7 @@ class HeaderItem extends Component {
              
         </View>
         <View style={styles.switch}>
-            <Text style={this.textStyle()}>All Motion</Text>
+            <Text style={this.textStyle()}>Other Motion</Text>
 
               <Switch
             onValueChange={(value) => this.valueChange(value)}

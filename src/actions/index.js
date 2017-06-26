@@ -17,16 +17,6 @@ export function getPhotos(pageOffset, pageSize){
     }
 }
 
-export function getMotionValue(){
-
-  return isMotion;
-}
-
-export function setMotion(value){
-
-  isMotion = value;
-
-}
 
 export function getMotion(pageOffset, pageSize){
   var obj = formatRequest('get');

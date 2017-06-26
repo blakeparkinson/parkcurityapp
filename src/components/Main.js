@@ -24,8 +24,6 @@ class Main extends Component {
     };
   constructor(props) {
     super(props);
-    this.triggerRefresh = false;
-    this.timer = false;
     this.currentItemIndex = 0;
   }
 
@@ -111,58 +109,58 @@ class Main extends Component {
 
     PushNotification.configure({
 
-    // (optional) Called when Token is generated (iOS and Android)
-    onRegister: function(token) {
-        console.log( 'TOKEN:', token );
-        props.saveToken(token);
-    },
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function(token) {
+          console.log( 'TOKEN:', token );
+          props.saveToken(token);
+      },
 
-    // (required) Called when a remote or local notification is opened or received
-    onNotification: function(notification) {
-        console.log( 'NOTIFICATION:', notification );
-        props.navigation.navigate('Image', { imageId: notification.data.imageId });
-        PushNotification.setApplicationIconBadgeNumber(0);
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: function(notification) {
+          console.log( 'NOTIFICATION:', notification );
+          props.navigation.navigate('Image', { imageId: notification.data.imageId });
+          PushNotification.setApplicationIconBadgeNumber(0);
 
 
-          /*try {
-            
-            AsyncStorage.getItem('badgeCount', (err, result) => {
-              var count = 0;
-              if (!err && result){
-                count = result;
-              }
-              AsyncStorage.setItem('badgeCount', count + 1);
+            /*try {
               
-            });
-          } 
-          catch (error) {
-            // Error saving data
-            console.log(error);
-          }*/
-        
-    },
+              AsyncStorage.getItem('badgeCount', (err, result) => {
+                var count = 0;
+                if (!err && result){
+                  count = result;
+                }
+                AsyncStorage.setItem('badgeCount', count + 1);
+                
+              });
+            } 
+            catch (error) {
+              // Error saving data
+              console.log(error);
+            }*/
+          
+      },
 
-    // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-    senderID: "YOUR GCM SENDER ID",
+      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+      senderID: "YOUR GCM SENDER ID",
 
-    // IOS ONLY (optional): default: all - Permissions to register.
-    permissions: {
-        alert: true,
-        badge: true,
-        sound: true
-    },
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+          alert: true,
+          badge: true,
+          sound: true
+      },
 
-    // Should the initial notification be popped automatically
-    // default: true
-    popInitialNotification: true,
+      // Should the initial notification be popped automatically
+      // default: true
+      popInitialNotification: true,
 
-    /**
-      * (optional) default: true
-      * - Specified if permissions (ios) and token (android and ios) will requested or not,
-      * - if not, you must call PushNotificationsHandler.requestPermissions() later
-      */
-    requestPermissions: true,
-    });
+      /**
+        * (optional) default: true
+        * - Specified if permissions (ios) and token (android and ios) will requested or not,
+        * - if not, you must call PushNotificationsHandler.requestPermissions() later
+        */
+      requestPermissions: true,
+      });
   }
 
   handlePicView(){
@@ -190,7 +188,6 @@ class Main extends Component {
   }
 
   setCurrentReadOffset = (event) => {
-    this.triggerRefresh = false;
     let itemHeight = 64;
     let currentOffset = Math.floor(event.nativeEvent.contentOffset.y);
     let newItemIndex = Math.ceil(currentOffset / itemHeight);
